@@ -11,7 +11,7 @@
 
 ### Herramienta utilizada y entorno de ejecución
 - **Herramienta anfitriona (Harness):** Gemini CLI / Google Antigravity (motor CLI v1.5.2) / Claude Code v2.1.318.
-- **Ruta del subagente:** [`.gemini/agents/revisor-seguridad.md`](file:///.gemini/agents/revisor-seguridad.md) (y compatible en [`.claude/agents/revisor-seguridad.md`](file:///.claude/agents/revisor-seguridad.md)).
+- **Ruta del subagente:** `.gemini/agents/revisor-seguridad.md` (y compatible en `.claude/agents/revisor-seguridad.md`).
 - **Formato:** Archivo Markdown con metadatos estructurados en frontmatter YAML (`name`, `description`, `tools`).
 - **Mecanismo de invocación ejecutado:** Invocación explícita mediante la orden:  
   `@revisor-seguridad revisa usuarios.py` (o vía delegación de subagente con `invoke_subagent`).
@@ -22,7 +22,7 @@
 2. **Ausencia de protocolo de transporte e interoperabilidad:**  
    No existen peticiones HTTP, gRPC ni intercambio de mensajes sobre estándares abiertos. El orquestador y el subagente se comunican mediante estructuras internas de datos en memoria y variables del harness local.
 3. **Falta de descubrimiento federado:**  
-   El harness descubre al subagente porque lee un archivo local estático en el disco duro ([`.gemini/agents/`](file:///.gemini/agents/)), no mediante negociación dinámica de capacidades (*Agent Cards* publicadas en URLs públicas como `/.well-known/agent-card.json`).
+   El harness descubre al subagente porque lee un archivo local estático en el disco duro (`.gemini/agents/`), no mediante negociación dinámica de capacidades (*Agent Cards* publicadas en URLs públicas como `/.well-known/agent-card.json`).
 4. **Acoplamiento propietario:**  
    El archivo de configuración sólo funciona si el harness lo interpreta con su parser específico. No es un agente interoperable que pueda ser invocado por otra plataforma independiente sin compartir el mismo código base.
 
@@ -30,7 +30,7 @@
 
 ## Evidencias Gráficas del Deber
 
-A continuación se presentan las cinco evidencias gráficas requeridas, enlazadas con rutas relativas a la carpeta [`evidencias/`](file:///evidencias/):
+A continuación se presentan las cinco evidencias gráficas requeridas, enlazadas con rutas relativas a la carpeta `evidencias/`:
 
 ### Evidencia 1 — Flujo del Equipo y Checkpoint Humano
 ![Flujo del Equipo y Checkpoint Humano](evidencias/parte1_flujo.png)
@@ -51,7 +51,7 @@ A continuación se presentan las cinco evidencias gráficas requeridas, enlazada
 
 ## ## A2UI — Interfaz Declarativa y Generative UI
 
-Se toma como base el hallazgo crítico detectado en la línea 21 de [`usuarios.py`](file:///usuarios.py): **Inyección SQL por concatenación de entrada de usuario sin sanitizar**.
+Se toma como base el hallazgo crítico detectado en la línea 21 de `usuarios.py`: **Inyección SQL por concatenación de entrada de usuario sin sanitizar**.
 
 ### 1. Salida Convencional (Tabla Markdown / Texto Estructurado)
 
@@ -132,7 +132,7 @@ Se define previamente un **catálogo cerrado de componentes permitidos** en el c
 }
 ```
 
-El archivo idéntico se encuentra disponible en la raíz como [`ui_ejemplo.json`](file:///ui_ejemplo.json).
+El archivo idéntico se encuentra disponible en la raíz como `ui_ejemplo.json`.
 
 ---
 
@@ -197,8 +197,8 @@ Dividir el trabajo en dos especialistas responde al principio de **responsabilid
 - **Qué costo agrega:** Introduce sobrecosto (overhead) de tokens de entrada al duplicar prompts de sistema, mayor consumo de cuota de API y la necesidad de un orquestador que sincronice y reconcilie los resultados.
 
 ### 2. ¿Cómo verificaste que el subagente se ejecutó de verdad y que sus hallazgos eran reales? ¿Qué harías si fallara?
-- **Verificación de ejecución real:** Se comprobó que el harness generó un hilo de conversación aislado (ID `7d78455b-ab13-421d-997f-d4d54c823263`) con su propio registro en `transcript.jsonl`, donde se registró la llamada de herramienta `view_file` sobre [`usuarios.py`](file:///usuarios.py) y el mensaje de retorno del especialista al agente principal.  
-- **Verificación de hallazgos reales:** Se contrastaron manualmente las líneas reportadas con el código fuente real: la línea 10 efectivamente contiene `API_KEY = "sk-demo-..."`, la línea 11 contiene `ADMIN_PASSWORD = "admin123"` y la línea 21 contiene `"SELECT * FROM usuarios WHERE nombre = '" + nombre + "'"` (concatenación vulnerable). Se ejecutó `git status` confirmando que [`usuarios.py`](file:///usuarios.py) no sufrió modificaciones.  
+- **Verificación de ejecución real:** Se comprobó que el harness generó un hilo de conversación aislado (ID `7d78455b-ab13-421d-997f-d4d54c823263`) con su propio registro en `transcript.jsonl`, donde se registró la llamada de herramienta `view_file` sobre `usuarios.py` y el mensaje de retorno del especialista al agente principal.  
+- **Verificación de hallazgos reales:** Se contrastaron manualmente las líneas reportadas con el código fuente real: la línea 10 efectivamente contiene `API_KEY = "sk-demo-..."`, la línea 11 contiene `ADMIN_PASSWORD = "admin123"` y la línea 21 contiene `"SELECT * FROM usuarios WHERE nombre = '" + nombre + "'"` (concatenación vulnerable). Se ejecutó `git status` confirmando que `usuarios.py` no sufrió modificaciones.  
 - **Acción ante fallo:** Si el subagente hubiera retornado datos vacíos o alucinado líneas inexistentes, el orquestador tiene programado un reintento automático (*retry*) con un prompt de corrección que inyecta la restricción estricta de las 43 líneas del archivo. Si persiste el fallo, se marca la tarea como fallida y se escala una alerta al checkpoint humano.
 
 ### 3. ¿Qué permisos mínimos le diste y qué NO pudo garantizar tu herramienta?
@@ -222,7 +222,7 @@ Dividir el trabajo en dos especialistas responde al principio de **responsabilid
 - **El backend verifica antes de atender el evento:**  
   1. La identidad autenticada de la sesión que despachó el evento (token JWT/OAuth).  
   2. La autorización RBAC del usuario para realizar la acción solicitada.  
-  3. La integridad contextual de los parámetros del payload (que el archivo [`usuarios.py`](file:///usuarios.py) y la línea 21 existan realmente en la rama actual del repositorio y no correspondan a una inyección de datos forjada).
+  3. La integridad contextual de los parámetros del payload (que el archivo `usuarios.py` y la línea 21 existan realmente en la rama actual del repositorio y no correspondan a una inyección de datos forjada).
 
 ### 7. ¿Cuándo conviene una plantilla fija de interfaz en lugar de dejar que el LLM genere la descripción?
 Conviene una **plantilla fija (Template-driven UI)** cuando:
