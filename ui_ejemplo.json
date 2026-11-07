@@ -1,0 +1,56 @@
+{
+  "$comment": "Ilustracion didactica; no es un mensaje A2UI estandar valido.",
+  "componentCatalog": [
+    "Card",
+    "Text",
+    "Badge",
+    "Button",
+    "Divider",
+    "Row"
+  ],
+  "view": {
+    "component": "Card",
+    "properties": {
+      "variant": "outlined",
+      "padding": "medium"
+    },
+    "children": [
+      {
+        "component": "Row",
+        "children": [
+          {
+            "component": "Text",
+            "text": "usuarios.py · línea 21"
+          },
+          {
+            "component": "Badge",
+            "label": "Severidad: Crítica",
+            "tone": "critical"
+          }
+        ]
+      },
+      {
+        "component": "Text",
+        "text": "Problema: Entrada de usuario 'nombre' sin validar concatenada directamente en la consulta SQL (Inyección SQL)."
+      },
+      {
+        "component": "Divider"
+      },
+      {
+        "component": "Button",
+        "label": "Solicitar revisión adicional",
+        "variant": "primary",
+        "event": {
+          "name": "pedir_revision",
+          "payload": {
+            "archivo": "usuarios.py",
+            "linea": 21,
+            "problema": "Inyección SQL en búsqueda de usuario",
+            "severidad": "crítica",
+            "timestamp": "2026-11-06T21:35:00Z"
+          }
+        }
+      }
+    ]
+  }
+}
