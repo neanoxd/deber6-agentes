@@ -81,7 +81,7 @@ El orquestador implementa mecanismos de control para detectar anomalías en las 
 
 ---
 
-## ## A2A — Descubrir y Delegar a un Agente Remoto
+## A2A — Descubrir y Delegar a un Agente Remoto
 
 En este escenario de diseño arquitectónico, el **Especialista 2 (Pruebas Faltantes)** deja de ser un script o subagente local y pasa a ser un **agente autónomo remoto**, operado por un equipo especializado en Quality Assurance en un servidor independiente bajo el protocolo A2A (Agent-to-Agent).
 

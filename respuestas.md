@@ -49,7 +49,7 @@ A continuación se presentan las cinco evidencias gráficas requeridas, enlazada
 
 ---
 
-## ## A2UI — Interfaz Declarativa y Generative UI
+## A2UI — Interfaz Declarativa y Generative UI
 
 Se toma como base el hallazgo crítico detectado en la línea 21 de `usuarios.py`: **Inyección SQL por concatenación de entrada de usuario sin sanitizar**.
 
